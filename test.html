@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Mood Tracker 💖</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background: linear-gradient(to right, #fbeaff, #ffeaf4);      
+      background-size: cover;
+      color: #fefefe;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    select, button {
+      font-size: 1rem;
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 10px;
+      margin: 0.5rem;
+      background: #ffeaf4;
+      color: #333;
+    }
+
+    #message {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      padding: 1.5rem;
+      border-radius: 15px;
+      background-color: rgba(255, 247, 252, 0.85);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      color: #333;
+    }
+
+    #log {
+      margin-top: 2rem;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 1rem;
+      border-radius: 10px;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>💖 How Are You Feeling Today?</h1>
+
+  <select id="moodSelect">
+    <option value="">-- Pick a mood --</option>
+    <option value="happy">😊 Happy</option>
+    <option value="tired">😴 Tired</option>
+    <option value="anxious">😰 Anxious</option>
+    <option value="hopeful">🌈 Hopeful</option>
+    <option value="moody">🌪️ Moody</option>
+    <option value="calm">🌸 Calm</option>
+  </select>
+
+  <button onclick="showMood()">Show Message</button>
+
+  <div id="message"></div>
+
+  <div id="log">
+    <h3>📝 Mood Log</h3>
+    <ul id="moodLog"></ul>
+  </div>
+
+  <audio autoplay loop hidden>
+    <source src="https://cdn.pixabay.com/download/audio/2023/03/28/audio_4d570aff27.mp3?filename=soft-piano-melody-144998.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const moodMessages = {
+      happy: "You're shining today! Keep spreading that beautiful energy ✨💃🏾",
+      tired: "Rest is productive too, babe. Take it easy and be kind to yourself 🛌💗",
+      anxious: "Deep breath. You’ve survived 100% of your hardest days. You got this 💪🏾🫶🏾",
+      hopeful: "That little spark inside you? It’s your dreams rooting for you. Keep going 🌟",
+      moody: "Feel what you feel, queen. Emotions don’t make you weak — they make you *real* 💅🏾",
+      calm: "Breathe in peace, exhale stress. This is your soft girl moment 💖☁️"
+    };
+
+    function showMood() {
+      const mood = document.getElementById("moodSelect").value;
+      const messageBox = document.getElementById("message");
+      const log = document.getElementById("moodLog");
+
+      if (mood) {
+        const message = moodMessages[mood] || "Sending you love 💌";
+        messageBox.innerText = message;
+
+        const now = new Date();
+        const entry = `${now.toLocaleString()}: ${mood.toUpperCase()} - ${message}`;
+        const li = document.createElement('li');
+        li.textContent = entry;
+        log.prepend(li);
+
+        // Save to localStorage
+        let moodHistory = JSON.parse(localStorage.getItem("moodHistory")) || [];
+        moodHistory.unshift(entry);
+        localStorage.setItem("moodHistory", JSON.stringify(moodHistory));
+      } else {
+        messageBox.innerText = "Select how you feel, and I’ll whisper some love into your soul 💌";
+      }
+    }
+
+    // Load log from localStorage on start
+    window.onload = function() {
+      const saved = JSON.parse(localStorage.getItem("moodHistory")) || [];
+      const log = document.getElementById("moodLog");
+      saved.forEach(entry => {
+        const li = document.createElement('li');
+        li.textContent = entry;
+        log.appendChild(li);
+      });
+    };
+
+    // Sparkly cursor trail ✨
+    document.body.addEventListener("mousemove", function(e) {
+      let sparkle = document.createElement("div");
+      sparkle.style.position = "absolute";
+      sparkle.style.width = "8px";
+      sparkle.style.height = "8px";
+      sparkle.style.background = "#fff";
+      sparkle.style.borderRadius = "50%";
+      sparkle.style.left = `${e.pageX}px`;
+      sparkle.style.top = `${e.pageY}px`;
+      sparkle.style.pointerEvents = "none";
+      sparkle.style.opacity = 0.8;
+      sparkle.style.zIndex = 9999;
+      sparkle.style.boxShadow = "0 0 10px #fff";
+
+      document.body.appendChild(sparkle);
+
+      setTimeout(() => {
+        sparkle.remove();
+      }, 500);
+    });
+  </script>
+</body>
+</html>

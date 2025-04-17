@@ -1,0 +1,115 @@
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: url('gray-floral.png') repeat, linear-gradient(to right, #fff0f5, #f5e6f0);
+    color: #4a3c4a;
+    text-align: center;
+    padding: 2rem;
+    overflow-x: hidden;
+}
+
+h1 {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+    color: #ff69b4;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+button,
+select,
+input[type="checkbox"] {
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+    border: 2px solid #ffb6c1;
+    border-radius: 15px;
+    margin: 0.5rem;
+    background: #fff5f7;
+    color: #4a3c4a;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+button:hover {
+    background: #ffccde;
+}
+
+#message {
+    margin: 2rem auto;
+    font-size: 1.2rem;
+    padding: 1.5rem;
+    border-radius: 20px;
+    background: rgba(255, 245, 247, 0.9);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    max-width: 450px;
+    color: #4a3c4a;
+    border: 3px solid #ffb6c1;
+}
+
+#log,
+#calendar,
+#symptoms {
+    margin: 2rem auto;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 1.5rem;
+    border-radius: 20px;
+    max-width: 500px;
+    border: 3px solid #ffb6c1;
+}
+
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    padding: 1rem;
+}
+
+.calendar-day {
+    padding: 10px;
+    border-radius: 10px;
+    background: #fff0f5;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #4a3c4a;
+}
+
+.calendar-day.mood-logged {
+    background: #ffb6c1;
+    color: #fff;
+}
+
+.calendar-day:hover {
+    background: #ffccde;
+}
+
+#symptoms label {
+    display: inline-block;
+    margin: 0.5rem;
+    font-size: 0.9rem;
+}
+
+#moodLog li {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border-radius: 10px;
+    background: #fff0f5;
+    color: #4a3c4a;
+}
+
+/* Sparkly cursor trail */
+.sparkle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, #ff69b4, transparent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.9;
+    box-shadow: 0 0 15px #ff69b4, 0 0 20px #ffb6c1;
+    animation: sparkleFade 0.7s ease-out forwards;
+}
+
+@keyframes sparkleFade {
+    to {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
