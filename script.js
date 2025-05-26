@@ -24,7 +24,7 @@ function showMood() {
             .join(", ") || "None";
 
         const now = new Date();
-        const dateTimeStr = now.toLocaleString('en-GB'); // e.g., "17/4/2025"
+        const dateTimeStr = now.toLocaleString('en-GB'); // e.g., "17/04/2025"
         const entry = `${dateTimeStr}: ${mood.toUpperCase()} | Symptoms: ${symptoms} | ${message}`;
         const li = document.createElement('li');
         li.textContent = entry;
@@ -55,33 +55,48 @@ window.onload = function () {
         li.textContent = entry;
         log.appendChild(li);
     });
+
+    // Initialize calendar with current month
+    const today = new Date();
+    currentYear = today.getFullYear();
+    currentMonth = today.getMonth();
     initCalendar();
 
-    // Add event listener for Log Mood button
+    // Add event listeners
     document.getElementById("logMoodBtn").addEventListener("click", showMood);
+    document.getElementById("prevMonthBtn").addEventListener("click", () => {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        initCalendar();
+    });
+    document.getElementById("nextMonthBtn").addEventListener("click", () => {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        initCalendar();
+    });
 };
 
 // Initialize calendar
 function initCalendar() {
-    const calendar = document.getElementById("calendar");
-    const calendarDays = document.getElementsByClassName("calender-days")
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = today.getMonth();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const firstDay = new Date(year, month, 1).getDay();
+    const calendarDays = document.querySelector(".calendar-days");
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
     const monthNames = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
     ];
 
-    // Clear existing content
-    calendar.innerHTML = '';
+    // Update header
+    document.querySelector("#calendar .header").textContent = `📅 ${monthNames[currentMonth]} ${currentYear}`;
 
-    // Add month/year header
-    const header = document.createElement('h3');
-    header.textContent = `📅 ${monthNames[month]} ${year}`;
-    calendarDays.before(header);
+    // Clear existing content
+    calendarDays.innerHTML = '';
 
     // Add weekday headers
     const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -102,8 +117,8 @@ function initCalendar() {
         const div = document.createElement('div');
         div.textContent = day;
         div.className = 'calendar-day';
-        div.onclick = () => showDayLog(year, month, day);
-        calendar.appendChild(div);
+        div.onclick = () => showDayLog(currentYear, currentMonth, day);
+        calendarDays.appendChild(div);
     }
 
     updateCalendar();
@@ -116,8 +131,7 @@ function updateCalendar() {
     days.forEach(day => {
         const dayNum = parseInt(day.textContent);
         if (!dayNum) return;
-        const today = new Date();
-        const dateStr = `${dayNum.toString().padStart(2, '0')}/${(today.getMonth() + 1).toString().padStart(2, '0')}/${today.getFullYear()}`;
+        const dateStr = `${dayNum.toString().padStart(2, '0')}/${(currentMonth + 1).toString().padStart(2, '0')}/${currentYear}`;
         const hasLog = saved.some(entry => entry.startsWith(dateStr));
         day.classList.toggle('mood-logged', hasLog);
     });
@@ -148,5 +162,5 @@ document.body.addEventListener("mousemove", function (e) {
     sparkle.style.left = `${e.pageX - 6}px`;
     sparkle.style.top = `${e.pageY - 6}px`;
     document.body.appendChild(sparkle);
-    setTimeout(() => sparkle.remove(), 700);
+    setTimeout(() => sparkle.remove(), 500);
 });
